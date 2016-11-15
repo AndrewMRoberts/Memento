@@ -4,12 +4,21 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-public class ReminderActivity extends AppCompatActivity {
+public class ReminderListActivity extends AppCompatActivity {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private Reminder[] mReminders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +36,16 @@ public class ReminderActivity extends AppCompatActivity {
             }
         });
 
-        ListView
+        mRecyclerView = (RecyclerView) findViewById(R.id.reminder_list_recycler_view);
+        // Performance enhancement
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new ReminderAdapter(mReminders);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
