@@ -1,5 +1,7 @@
 package com.github.robtotriceratops.memento;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,17 +14,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class ReminderListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private Reminder[] mReminders;
+    private ArrayList<Reminder> mReminders;
+
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_reminder);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -31,8 +38,8 @@ public class ReminderListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent createReminderIntent = new Intent(mContext, CreateReminderActivity.class);
+                startActivity(createReminderIntent);
             }
         });
 
@@ -43,6 +50,13 @@ public class ReminderListActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mReminders = new ArrayList<>();
+        mReminders.add(new Reminder("Test"));
+        mReminders.add(new Reminder("Test 2"));
+        mReminders.add(new Reminder("Test 3"));
+        mReminders.add(new Reminder("Test 4"));
+
 
         mAdapter = new ReminderAdapter(mReminders);
         mRecyclerView.setAdapter(mAdapter);
